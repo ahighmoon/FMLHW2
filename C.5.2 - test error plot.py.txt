@@ -1,0 +1,36 @@
+import os
+import matplotlib.pyplot as plt
+import numpy as np 
+
+dStar = 2
+kStar = 4
+
+dic = [0 for i in range(6) ]
+f = open("train/results.txt", 'r')
+for line in f:
+    cnt=line.split(' ')
+    a1 = int(cnt[0])
+    a2 = int(cnt[1])
+    a3 = int(cnt[2])
+    err = 1.0 - cnt[3]/100
+    if k == kStar and d == dStar:
+        dic[s].append(err)
+f.close()
+K = 10
+for s in range(1,6):
+    std[s] = np.std(dic[s])
+    mean[s] = np.mean(dic[s])
+
+        
+fig = plt.figure(0) 
+plt.title("Test Error")
+plt.xlabel('Sample', fontsize=15)
+plt.ylabel('Error', fontsize=10)
+X = []
+y = []
+for i in range(1,6):
+    X.append(i)
+    y.append(dic[i])
+plt.plot(X,y)
+plt.show()
+plt.close(0)

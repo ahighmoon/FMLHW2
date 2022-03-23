@@ -1,0 +1,31 @@
+import os
+os.system("mkdir data")
+os.system("mkdir output")
+
+sex = {}
+sex['M'] = '1:1 2:0 3:0';
+sex['F'] = '1:0 2:1 3:0';
+sex['I'] = '1:0 2:0 3:1';
+f = open('abalone.data','r+')
+ftrain=open('output/train.txt','w')
+ftest=open('output/test.txt','w')
+cnt = 0
+
+for line in f.readlines():
+    content = line.split(',')
+    length = len(content) - 1
+    label = "-1" if int(content[length]) <= 9 else "1"
+    str = label + "%s" % sex[content[0]]
+    for i in range(1, 8):
+        str += " %d : %s" % (i + 3,content[i])        
+    if cnt <= 3132:
+        ftrain.write(str + "\n")
+    else:
+        ftest.write(str + "\n")
+    cnt += 1
+ftrain.close()
+ftest.close()
+f.close()
+
+os.system("libsvm-3.0/svm-scale -s output/scale.txt output/train.txt > output/train.scaled.txt")
+os.system("libsvm-3.0/svm-scale -r output/scale.txt output/test.txt > output/test.scaled.txt")

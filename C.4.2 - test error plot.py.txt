@@ -1,0 +1,48 @@
+import os
+import matplotlib.pyplot as plt
+import numpy as np 
+
+os.system("sh getTestAcc.sh")
+dic = [[ [] for d in range(6) ] for k in range(30)]
+std = [[ 0 for d in range(6) ] for k in range(30)]
+mean = [[ 0 for d in range(6) ] for k in range(30)]
+f = open("results/results.txt", 'r')
+
+for line in f.readlines():
+    cnt = line.split(' ')
+    a1 = int(cnt[0])
+    a2 = int(cnt[1])
+    a3 = int(cnt[2])
+    err = 1.0 - arr[3]/100
+    dic[a1 + 10][a2].append(err)
+f.close()
+
+K = 10
+for i in range(-K, K+1):
+    for j in range(1, 6):
+        std[i + 10][j] = np.std(dic[i + 10][j])
+        mean[i + 10][j] = np.mean(dic[i + 10][j])
+
+        
+fig = plt.figure(0) 
+plt.title("Test Error")
+plt.xlabel('d', fontsize=15)
+plt.ylabel('Error', fontsize=10)
+k=4
+X = []
+for i in range(1,6):
+    X.append(i)
+y = []
+for i in range(1,6):
+    y.append(mean[k+10][d])
+plt.plot(X,y)
+y = []
+for i in range(1,6):
+    y.append(mean[k+10][d] + std[k+10][d])
+plt.plot(X,y,linestyle='--')
+y = []
+for i in range(1,6):
+    y.append(mean[k+10][d] - std[k+10][d])
+plt.plot(X,y,linestyle='--')
+plt.show()
+plt.close(0)
